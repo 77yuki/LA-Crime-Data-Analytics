@@ -4,27 +4,27 @@ import mysql.connector
 app = Flask(__name__)
 
 def get_data_from_db(query):
-    # 连接到 MySQL 数据库
+    # connect to MySQL database
     connection = mysql.connector.connect(
-        host='localhost',
-        user='root',
-        password='ltcb57655',
-        database='cs 338 project'
+        host='localhost', # Enter your servername name or IP "normally localhost or 127.0.0.1"
+        user='root', # Enter your user name, defult name is root
+        password='', // Enter your password
+        database='' // Enter your database name
     )
 
-    # 创建一个游标对象
+    # create a cursor 
     cursor = connection.cursor()
 
-    # 执行查询
+    # execute searching
     cursor.execute(query)
 
-    # 获取所有结果
+    # obtain all the result
     results = cursor.fetchall()
 
-    # 获取列名
+    # obtain column names
     column_names = [i[0] for i in cursor.description]
 
-    # 关闭游标和连接
+    # close cursor and connection
     cursor.close()
     connection.close()
 
@@ -32,9 +32,9 @@ def get_data_from_db(query):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    query = "SELECT * FROM sample"  # 默认查询
+    query = "SELECT * FROM (replace with your table name)"  # default searching
     if request.method == 'POST':
-        query = request.form['query']  # 获取用户输入的查询
+        query = request.form['query']  # execute the command made by user
 
     column_names, data = get_data_from_db(query)
     return render_template('index.html', columns=column_names, data=data, query=query)
