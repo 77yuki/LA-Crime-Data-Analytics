@@ -1,0 +1,5 @@
+Connection to MySQL:
+pip install mysql-connector-python
+
+Show on html:
+pip install flask mysql-connector-python
