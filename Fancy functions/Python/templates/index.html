@@ -3,30 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MySQL Data</title>
+    <title>Data Dashboard</title>
+    <style>
+        .nav-button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .nav-button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <h1>Data from MySQL Database</h1>
+    <h1>Data Dashboard</h1>
+    <nav>
+        <form action="/" method="get" style="display: inline;">
+            <input type="hidden" name="query" value="F2">
+            <button type="submit" class="nav-button">F2</button>
+        </form>
+        <form action="/" method="get" style="display: inline;">
+            <input type="hidden" name="query" value="F3">
+            <button type="submit" class="nav-button">F3</button>
+        </form>
+        <form action="/" method="get" style="display: inline;">
+            <input type="hidden" name="query" value="F5">
+            <button type="submit" class="nav-button">F5</button>
+        </form>
+        <form action="/" method="get" style="display: inline;">
+            <input type="hidden" name="query" value="F6">
+            <button type="submit" class="nav-button">F6</button>
+        </form>
+    </nav>
 
-    <form method="post">
-        <label for="query">Enter your SQL query:</label><br>
-        <textarea id="query" name="query" rows="4" cols="50">{{ query }}</textarea><br><br>
-        <input type="submit" value="Execute Query">
+    <form method="get" action="/">
+        <input type="hidden" name="query" value="{{ query_name }}">
+        
+        {% if query_name == 'F2' %}
+        <label for="crime_type">Crime Type:</label>
+        <input type="text" id="crime_type" name="crime_type" value="{{ crime_type }}">
+        {% endif %}
+
+        {% if query_name == 'F3' %}
+        <label for="most_or_least">Order Type (Most or Least):</label>
+        <input type="text" id="most_or_least" name="most_or_least" value="{{ most_or_least }}">
+        {% endif %}
+
+        {% if query_name == 'F5' %}
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+        {% endif %}
+
+        {% if query_name == 'F6' %}
+        <label for="area_name">Area Name:</label>
+        <input type="text" id="area_name" name="area_name" value="{{ area_name }}">
+        {% endif %}
+        
+        <button type="submit">Filter</button>
     </form>
+
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
 
     <table border="1">
         <thead>
             <tr>
-                {% for column in columns %}
-                <th>{{ column }}</th>
-                {% endfor %}
+                {% if data %}
+                    {% for key in data[0].keys() %}
+                    <th>{{ key }}</th>
+                    {% endfor %}
+                {% endif %}
             </tr>
         </thead>
         <tbody>
             {% for row in data %}
             <tr>
-                {% for item in row %}
-                <td>{{ item }}</td>
+                {% for value in row.values() %}
+                <td>{{ value }}</td>
                 {% endfor %}
             </tr>
             {% endfor %}
