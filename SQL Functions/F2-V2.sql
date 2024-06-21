@@ -1,0 +1,4 @@
+SET SQL_SAFE_UPDATES = 0;
+DELETE FROM `cs 338 project`.sample
+WHERE `Vict Age` > 18;
+SET SQL_SAFE_UPDATES = 1;
