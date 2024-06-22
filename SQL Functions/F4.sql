@@ -1,5 +1,3 @@
-USE `cs 338 project`;
-
 SELECT 
     HOUR, 
     COUNT(*) AS CrimeCount
