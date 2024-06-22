@@ -32,8 +32,8 @@ to connect to your MySQL database. Finally, run the code and open the address
 http://127.0.0.1:5000/ in your browser.
 
 Current features:
-F2: (not available)
-F3: (not available)
-F5: add a row of data into table (not available)
-F6: Enter an area name and it will show the highest number of crimes in which hour during a day
+F1: Present the crime information based on the age of victim
+F2: Update the gender information
+F3: Add a row of data into table 
+F4: Enter an area name and it will count the crimes on hourly basis
 
