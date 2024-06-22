@@ -17,7 +17,7 @@ Then, using the 'cursor' to make a connection with MySQL, then exceute the query
 
 Application acknowledgement:
 The application is in the folder "Fancy functions/Python", you need to download the folder 
-"tempplates" and the file "test file.py".
+"tempplates" and "SQL Functions" with file "test file.py".
 The website is created based on the "flask" package in Python. This require two application 
 to be installed, Python and MySQL. MySQL need be the latest version. You also need to 
 installed python with newest edition (in Microsoft store for Windows), 
@@ -30,3 +30,10 @@ pip install flask mysql-connector-python
 Then Make adjustment to the fields 'Host, user, password, database name' in "test file.py" 
 to connect to your MySQL database. Finally, run the code and open the address
 http://127.0.0.1:5000/ in your browser.
+
+Current features:
+F2: (not available)
+F3: (not available)
+F5: add a row of data into table (not available)
+F6: Enter an area name and it will show the highest number of crimes in which hour during a day
+
