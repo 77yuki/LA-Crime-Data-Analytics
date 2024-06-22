@@ -16,7 +16,8 @@ Then, using the 'cursor' to make a connection with MySQL, then exceute the query
 "select * from YOUR_TABLE_NAME" to load the data from database
 
 Application acknowledgement:
-The application is in the folder "Fancy functions/Python"
+The application is in the folder "Fancy functions/Python", you need to download the folder 
+"tempplates" and the file "test file.py".
 The website is created based on the "flask" package in Python. This require two application 
 to be installed, Python and MySQL. MySQL need be the latest version. You also need to 
 installed python with newest edition (in Microsoft store for Windows), 
