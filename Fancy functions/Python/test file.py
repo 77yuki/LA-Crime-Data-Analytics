@@ -46,7 +46,7 @@ def index():
         'F2': os.path.join(base_path, 'F2.sql'),
         'F3': os.path.join(base_path, 'F3.sql'),
         'F5': os.path.join(base_path, 'F5.sql'),
-        'F6': os.path.join(base_path, 'F6.sql')
+        'F6': os.path.join(base_path, 'F4.sql')
     }
 
 #    # Debugging: Print paths to verify they are correct
