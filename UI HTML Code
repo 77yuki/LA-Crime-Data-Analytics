@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LA Crime Statistics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 80vh;
+            width: 100%;
+        }
+        .controls {
+            padding: 10px;
+            background: #f8f8f8;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .filters, .search {
+            display: flex;
+            align-items: center;
+        }
+        .filters button, .search input {
+            margin-right: 10px;
+        }
+        .search input {
+            padding: 5px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<div class="controls">
+    <div class="filters">
+        <button onclick="filterCrimes('all')">All Crimes</button>
+        <button onclick="filterCrimes('theft')">Theft</button>
+        <button onclick="filterCrimes('assault')">Assault</button>
+        <button onclick="filterCrimes('vandalism')">Vandalism</button>
+    </div>
+    <div class="search">
+        <input type="text" id="location-search" placeholder="Search Location">
+        <button onclick="searchLocation()">Search</button>
+    </div>
+    <div class="summary-buttons">
+        <button onclick="showMaxCrimeArea()">Max Crime Area</button>
+        <button onclick="showMinCrimeArea()">Min Crime Area</button>
+    </div>
+</div>
+
+<div id="map"></div>
+
+<script>
+    let map;
+    let markers = [];
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: 34.0522, lng: -118.2437 },
+            zoom: 10
+        });
+
+        // Example crime data
+        const crimes = [
+            { position: { lat: 34.0522, lng: -118.2437 }, type: 'theft', info: 'Theft at Main St.' },
+            { position: { lat: 34.0622, lng: -118.2537 }, type: 'assault', info: 'Assault at 2nd St.' },
+            { position: { lat: 34.0722, lng: -118.2637 }, type: 'vandalism', info: 'Vandalism at 3rd St.' },
+            // Add more data as needed
+        ];
+
+        // Add markers to the map
+        crimes.forEach(crime => {
+            const marker = new google.maps.Marker({
+                position: crime.position,
+                map: map,
+                title: crime.type
+            });
+
+            const infoWindow = new google.maps.InfoWindow({
+                content: crime.info
+            });
+
+            marker.addListener('mouseover', () => {
+                infoWindow.open(map, marker);
+            });
+
+            marker.addListener('mouseout', () => {
+                infoWindow.close();
+            });
+
+            markers.push(marker);
+        });
+    }
+
+    function filterCrimes(type) {
+        markers.forEach(marker => {
+            if (type === 'all' || marker.title === type) {
+                marker.setMap(map);
+            } else {
+                marker.setMap(null);
+            }
+        });
+    }
+
+    function searchLocation() {
+        const address = document.getElementById('location-search').value;
+        const geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status === 'OK') {
+                map.setCenter(results[0].geometry.location);
+                map.setZoom(12);
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
+
+    function showMaxCrimeArea() {
+        // This function should highlight the area with maximum crime
+        // Implementation depends on the dataset and additional logic
+        alert('Showing area with maximum crime');
+    }
+
+    function showMinCrimeArea() {
+        // This function should highlight the area with minimum crime
+        // Implementation depends on the dataset and additional logic
+        alert('Showing area with minimum crime');
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0QPGHSS4qW_ckP3g6TOmT1qVgcJBJ0Qs
+&callback=initMap" async defer></script>
+
+</body>
+</html>
