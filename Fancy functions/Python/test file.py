@@ -26,7 +26,7 @@ def read_sql_file(file_path):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    query_name = request.args.get('query', 'F2')  # Default query is 'F2'
+    query_name = request.args.get('query', 'F4')  # Default query is 'F2'
     most_or_least = request.args.get('most_or_least', 'Most')
     start_date = request.args.get('start_date', '2000-01-01')
     end_date = request.args.get('end_date', '2100-01-01')
@@ -46,7 +46,7 @@ def index():
         'F2': os.path.join(base_path, 'F2.sql'),
         'F3': os.path.join(base_path, 'F3.sql'),
         'F5': os.path.join(base_path, 'F5.sql'),
-        'F6': os.path.join(base_path, 'F4.sql')
+        'F4': os.path.join(base_path, 'F4.sql')
     }
 
 #    # Debugging: Print paths to verify they are correct
@@ -66,7 +66,7 @@ def index():
                 query = query.format(most_or_least=most_or_least)
             elif query_name == 'F5':
                 query = query.format(ini_date=start_date, end_date=end_date)
-            elif query_name == 'F6':
+            elif query_name == 'F4':
                 query = query.format(area_name=area_name)
             print(f"Formatted Query: {query}")
             cursor.execute(query)
