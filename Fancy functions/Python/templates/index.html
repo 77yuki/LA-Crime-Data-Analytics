@@ -26,6 +26,10 @@
     <h1>Data Dashboard</h1>
     <nav>
         <form action="/" method="get" style="display: inline;">
+            <input type="hidden" name="query" value="F1">
+            <button type="submit" class="nav-button">F1</button>
+        </form>
+        <form action="/" method="get" style="display: inline;">
             <input type="hidden" name="query" value="F2">
             <button type="submit" class="nav-button">F2</button>
         </form>
@@ -34,36 +38,32 @@
             <button type="submit" class="nav-button">F3</button>
         </form>
         <form action="/" method="get" style="display: inline;">
-            <input type="hidden" name="query" value="F5">
-            <button type="submit" class="nav-button">F5</button>
-        </form>
-        <form action="/" method="get" style="display: inline;">
-            <input type="hidden" name="query" value="F6">
-            <button type="submit" class="nav-button">F6</button>
+            <input type="hidden" name="query" value="F4">
+            <button type="submit" class="nav-button">F4</button>
         </form>
     </nav>
 
     <form method="get" action="/">
         <input type="hidden" name="query" value="{{ query_name }}">
         
-        {% if query_name == 'F2' %}
+        {% if query_name == 'F1' %}
         <label for="crime_type">Crime Type:</label>
         <input type="text" id="crime_type" name="crime_type" value="{{ crime_type }}">
         {% endif %}
 
-        {% if query_name == 'F3' %}
+        {% if query_name == 'F2' %}
         <label for="most_or_least">Order Type (Most or Least):</label>
         <input type="text" id="most_or_least" name="most_or_least" value="{{ most_or_least }}">
         {% endif %}
 
-        {% if query_name == 'F5' %}
+        {% if query_name == 'F3' %}
         <label for="start_date">Start Date:</label>
         <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
         <label for="end_date">End Date:</label>
         <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
         {% endif %}
 
-        {% if query_name == 'F6' %}
+        {% if query_name == 'F4' %}
         <label for="area_name">Area Name:</label>
         <input type="text" id="area_name" name="area_name" value="{{ area_name }}">
         {% endif %}
