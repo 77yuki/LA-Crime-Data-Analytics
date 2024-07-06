@@ -34,15 +34,35 @@
             border: 1px solid #ddd;
         }
     </style>
+    <!--style for the buttons !-->  
+    <style>
+        .filter-button { 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 6px 14px;
+            font-family: Arial, Helvetica, sans-serif; /* Common web-safe fonts */
+            border-radius: 9px;
+            border: none;
+            color: #fff;
+            background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
+            background-origin: border-box;
+            box-shadow: 0px 0.5px 1.5px rgba(54, 122, 246, 0.25), inset 0px 0.8px 0px -0.25px rgba(255, 255, 255, 0.2);
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+    </style>
 </head>
 <body>
 
 <div class="controls">
     <div class="filters">
-        <button onclick="filterCrimes('all')">All Crimes</button>
-        <button onclick="filterCrimes('theft')">Theft</button>
-        <button onclick="filterCrimes('assault')">Assault</button>
-        <button onclick="filterCrimes('vandalism')">Vandalism</button>
+        <button class="filter-button" onclick="filterCrimes('all')">All Crimes</button>
+        <button class="filter-button" onclick="filterCrimes('theft')">Theft</button>
+        <button class="filter-button" onclick="filterCrimes('assault')">Assault</button>
+        <button class="filter-button" onclick="filterCrimes('vandalism')">Vandalism</button>
+        <button class="filter-button">Test</button>
     </div>
     <div class="search">
         <input type="text" id="location-search" placeholder="Search Location">
