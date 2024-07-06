@@ -76,6 +76,14 @@
             <input type="hidden" name="query" value="F4">
             <button type="submit" class="nav-button">F4</button>
         </form>
+		<form action="/" method="get" style="display: inline;">
+            <input type="hidden" name="query" value="F5">
+            <button type="submit" class="nav-button">F5</button>
+        </form>
+		<form action="/" method="get" style="display: inline;">
+            <input type="hidden" name="query" value="F6">
+            <button type="submit" class="nav-button">F6</button>
+        </form>
     </nav>
 
     <form method="get" action="/">
@@ -94,12 +102,7 @@
         {% endif %}
 
         {% if query_name == 'F3' %}
-        <label for="crm_cd">Crime ID:</label>
-        <input type="text" id="crm_cd" name="crm_cd" value="{{ crm_cd }}">
-        <label for="lat">Latitude:</label>
-        <input type="text" id="lat" name="lat" value="{{ lat }}">
-        <label for="lon">Longitude:</label>
-        <input type="text" id="lon" name="lon" value="{{ lon }}">
+		<p>Executing F3 Query</p>
         {% endif %}
 
         {% if query_name == 'F4' %}
@@ -107,8 +110,26 @@
         <input type="text" id="area_name" name="area_name" value="{{ area_name }}">
         {% endif %}
         
+		{% if query_name == 'F5' %}
+        <p>Executing F5 Query</p>
+        {% endif %}
+		
+		{% if query_name == 'F6' %}
+        <label for="lat">Latitude:</label>
+        <input type="text" id="lat" name="lat" value="{{ lat }}">
+        <label for="lon">Longitude:</label>
+        <input type="text" id="lon" name="lon" value="{{ lon }}">
+        {% endif %}
+		
         <button type="submit">Submit</button>
     </form>
+	
+	<input
+      id="pac-input"
+      class="controls"
+      type="text"
+      placeholder="Search Box"
+    />
 
     {% if error %}
     <p style="color: red;">{{ error }}</p>
@@ -137,14 +158,9 @@
         </tbody>
     </table>
 	
-	<input
-      id="pac-input"
-      class="controls"
-      type="text"
-      placeholder="Search Box"
-    />
+
 	
-	
+
 <script>
     let map;
     let markers = [];
