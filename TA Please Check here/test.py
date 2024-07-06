@@ -1,7 +1,5 @@
 from flask import Flask, render_template, request, jsonify
 import mysql.connector
-import sqlite3 
-from sqlite3 import OperationalError
 import os
 
 app = Flask(__name__)
@@ -16,24 +14,17 @@ def get_db_connection():
         database="cs 338 project"
     )
 
-def executeScriptsFromFile(filename,cursor):
-    # Open and read the file as a single buffer
-    fd = open(filename, 'r')
-    sqlFile = fd.read()
-    fd.close()
+def read_query_from_file(filename):
+    with open(filename, 'r') as file:
+        query = file.read().strip()
+    return query
 
-    # all SQL commands (split on ';')
-    sqlCommands = sqlFile.split(';')
-
-    # Execute every command from the input file
-    for command in sqlCommands:
-        # This will skip and report errors
-        # For example, if the tables do not yet exist, this will skip over
-        # the DROP TABLE commands
-        try:
-            cursor.execute(command)
-        except OperationalError as msg:
-            print("Command skipped: ", msg)
+def read_sql_file(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        content = file.read()
+    statements = content.split(';')    
+    statements = [statement.strip() for statement in statements if statement.strip()]
+    return statements
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -44,6 +35,8 @@ def index():
     end_date = request.args.get('end_date', '2100-01-01')
     crime_type = request.args.get('crime_type', '330')
     area_name = request.args.get('area_name', 'Central')
+    lat = request.args.get('lat', '34.0241')
+    lon = request.args.get('lon', '-118.232')
 
     print(f"Query Name: {query_name}")
     print(f"Parameters - most_or_least: {most_or_least}, start_date: {start_date}, end_date: {end_date}, crime_type: {crime_type}, area_name: {area_name}")
@@ -57,8 +50,9 @@ def index():
         'Defult': os.path.join(base_path, 'Defult.sql'),
         'F2': os.path.join(base_path, 'F2.sql'),
         'F3': os.path.join(base_path, 'F3.sql'),
+        'F4': os.path.join(base_path, 'F4.sql'),
         'F5': os.path.join(base_path, 'F5.sql'),
-        'F4': os.path.join(base_path, 'F4.sql')
+        'F6': os.path.join(base_path, 'F6.sql')
     }
 
 #    # Debugging: Print paths to verify they are correct
@@ -69,22 +63,27 @@ def index():
     error = None
 
     if query_name in query_files:
-        query = executeScriptsFromFile(query_files[query_name],cursor)
+        query = read_query_from_file(query_files[query_name])
         print(f"Query before formatting: {query}")
         try:
             if query_name == 'F2':
                 query = query.format(crime_type=crime_type)
             elif query_name == 'F3':
                 query = query.format(most_or_least=most_or_least)
-            elif query_name == 'F5':
-                query = query.format(ini_date=start_date, end_date=end_date)
             elif query_name == 'F4':
                 query = query.format(area_name=area_name)
+            elif query_name == 'F6':
+                query = query.format(lat=lat,lon=lon)
             print(f"Formatted Query: {query}")
-            cursor.execute(query)
-            data = cursor.fetchall()
+
+            for result in cursor.execute(query, multi=True):
+                if result.with_rows:
+                    print("Rows produced by statement '{}':".format(result.statement))
+                    data = result.fetchall()
+                    print(data)
             markers = data
             print(f"Data Fetched: {data}")
+
         except Exception as e:
             error = str(e)
             print(f"Error: {error}")
@@ -95,7 +94,8 @@ def index():
     cursor.close()
     db.close()
     
-    return render_template('index.html', query_name=query_name, data=data, most_or_least=most_or_least, start_date=start_date, end_date=end_date, crime_type=crime_type, area_name=area_name, error=error)
+    return render_template('index.html', query_name=query_name, data=data, most_or_least=most_or_least, start_date=start_date, end_date=end_date, 
+                           crime_type=crime_type, area_name=area_name, error=error, lat=lat, lon=lon)
 
 @app.route('/api/markers')
 def get_markers():
