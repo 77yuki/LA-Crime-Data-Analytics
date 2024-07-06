@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script type="module" src="./index.js"></script>
+    <title>LA Crime Statistics</title>
+    <style>
+        .nav-button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .nav-button:hover {
+            background-color: #45a049;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 80vh;
+            width: 100%;
+        }
+        .controls {
+            padding: 10px;
+            background: #f8f8f8;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .filters, .search {
+            display: flex;
+            align-items: center;
+        }
+        .filters button, .search input {
+            margin-right: 10px;
+        }
+        .search input {
+            padding: 5px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>LA Crime Statistics</h1>
+    <nav>
+		<form action="/" method="get" style="display: inline;">
+            <input type="hidden" name="query" value="Defult">
+            <button type="submit" class="nav-button">Defult</button>
+        </form>
+        <form action="/" method="get" style="display: inline;">
+            <input type="hidden" name="query" value="F1">
+            <button type="submit" class="nav-button">F1</button>
+        </form>
+        <form action="/" method="get" style="display: inline;">
+            <input type="hidden" name="query" value="F2">
+            <button type="submit" class="nav-button">F2</button>
+        </form>
+        <form action="/" method="get" style="display: inline;">
+            <input type="hidden" name="query" value="F3">
+            <button type="submit" class="nav-button">F3</button>
+        </form>
+        <form action="/" method="get" style="display: inline;">
+            <input type="hidden" name="query" value="F4">
+            <button type="submit" class="nav-button">F4</button>
+        </form>
+    </nav>
+
+    <form method="get" action="/">
+        <input type="hidden" name="query" value="{{ query_name }}">
+        
+		{% if query_name == 'Defult' %}
+        <p>Executing Defult Query</p>
+        {% endif %}
+		
+        {% if query_name == 'F1' %}
+        <p>Executing F1 Query</p>
+        {% endif %}
+
+        {% if query_name == 'F2' %}
+        <p>Executing F2 Query</p>
+        {% endif %}
+
+        {% if query_name == 'F3' %}
+        <label for="crm_cd">Crime ID:</label>
+        <input type="text" id="crm_cd" name="crm_cd" value="{{ crm_cd }}">
+        <label for="lat">Latitude:</label>
+        <input type="text" id="lat" name="lat" value="{{ lat }}">
+        <label for="lon">Longitude:</label>
+        <input type="text" id="lon" name="lon" value="{{ lon }}">
+        {% endif %}
+
+        {% if query_name == 'F4' %}
+        <label for="area_name">Area Name:</label>
+        <input type="text" id="area_name" name="area_name" value="{{ area_name }}">
+        {% endif %}
+        
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+<div id="map"></div>
+
+    <table border="1">
+        <thead>
+            <tr>
+                {% if data %}
+                    {% for key in data[0].keys() %}
+                    <th>{{ key }}</th>
+                    {% endfor %}
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                {% for value in row.values() %}
+                <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+	
+	<input
+      id="pac-input"
+      class="controls"
+      type="text"
+      placeholder="Search Box"
+    />
+	
+	
+<script>
+    let map;
+    let markers = [];
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: 34.0522, lng: -118.2437 },
+            zoom: 10
+        });
+
+        // Example crime data
+        const crimes = [
+            { position: { lat: 34.0522, lng: -118.2437 }, type: 'theft', info: 'Theft at Main St.' },
+            { position: { lat: 34.0622, lng: -118.2537 }, type: 'assault', info: 'Assault at 2nd St.' },
+            { position: { lat: 34.0722, lng: -118.2637 }, type: 'vandalism', info: 'Vandalism at 3rd St.' },
+            // Add more data as needed
+        ];
+
+        // Add markers to the map
+        crimes.forEach(crime => {
+            const marker = new google.maps.Marker({
+                position: crime.position,
+                map: map,
+                title: crime.type
+            });
+
+            const infoWindow = new google.maps.InfoWindow({
+                content: crime.info
+            });
+
+            marker.addListener('mouseover', () => {
+                infoWindow.open(map, marker);
+            });
+
+            marker.addListener('mouseout', () => {
+                infoWindow.close();
+            });
+
+            markers.push(marker);
+        });
+    }
+
+    function filterCrimes(type) {
+        markers.forEach(marker => {
+            if (type === 'all' || marker.title === type) {
+                marker.setMap(map);
+            } else {
+                marker.setMap(null);
+            }
+        });
+    }
+
+    function searchLocation() {
+        const address = document.getElementById('location-search').value;
+        const geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status === 'OK') {
+                map.setCenter(results[0].geometry.location);
+                map.setZoom(12);
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
+
+    function showMaxCrimeArea() {
+        // This function should highlight the area with maximum crime
+        // Implementation depends on the dataset and additional logic
+        alert('Showing area with maximum crime');
+    }
+
+    function showMinCrimeArea() {
+        // This function should highlight the area with minimum crime
+        // Implementation depends on the dataset and additional logic
+        alert('Showing area with minimum crime');
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0QPGHSS4qW_ckP3g6TOmT1qVgcJBJ0Qs&callback=initMap" async defer></script>
+
+<script>
+function initMap() {
+       var options = {
+            zoom: 10,
+            center: {lat: 34.0522, lng: -118.2437} // San Francisco
+        };
+
+       var map = new google.maps.Map(document.getElementById('map'), options);
+
+        // Fetch marker data from the Flask endpoint
+        fetch('/api/markers')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(markerData => {
+                    addMarker(markerData);
+                });
+            })
+            .catch(error => console.error('Error fetching marker data:', error));
+
+        // Add marker function
+        function addMarker(props){
+            var marker = new google.maps.Marker({
+                position: {lat: props.LAT, lng: props.LON},
+                map: map
+            });
+
+            if(props.content){
+                var infoWindow = new google.maps.InfoWindow({
+                    content: props.content
+                });
+
+                marker.addListener('click', function(){
+                    infoWindow.open(map, marker);
+                });
+            }
+        }
+    }
+
+function initAutocomplete() {
+  const map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: -33.8688, lng: 151.2195 },
+    zoom: 13,
+    mapTypeId: "roadmap",
+  });
+  // Create the search box and link it to the UI element.
+  const input = document.getElementById("pac-input");
+  const searchBox = new google.maps.places.SearchBox(input);
+
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+  // Bias the SearchBox results towards current map's viewport.
+  map.addListener("bounds_changed", () => {
+    searchBox.setBounds(map.getBounds());
+  });
+
+  let markers = [];
+
+  // Listen for the event fired when the user selects a prediction and retrieve
+  // more details for that place.
+  searchBox.addListener("places_changed", () => {
+    const places = searchBox.getPlaces();
+
+    if (places.length == 0) {
+      return;
+    }
+
+    // Clear out the old markers.
+    markers.forEach((marker) => {
+      marker.setMap(null);
+    });
+    markers = [];
+
+    // For each place, get the icon, name and location.
+    const bounds = new google.maps.LatLngBounds();
+
+    places.forEach((place) => {
+      if (!place.geometry || !place.geometry.location) {
+        console.log("Returned place contains no geometry");
+        return;
+      }
+
+      const icon = {
+        url: place.icon,
+        size: new google.maps.Size(71, 71),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(17, 34),
+        scaledSize: new google.maps.Size(25, 25),
+      };
+
+      // Create a marker for each place.
+      markers.push(
+        new google.maps.Marker({
+          map,
+          icon,
+          title: place.name,
+          position: place.geometry.location,
+        }),
+      );
+      if (place.geometry.viewport) {
+        // Only geocodes have viewport.
+        bounds.union(place.geometry.viewport);
+      } else {
+        bounds.extend(place.geometry.location);
+      }
+    });
+    map.fitBounds(bounds);
+  });
+}
+
+    window.onload = initMap;
+	window.initAutocomplete = initAutocomplete;
+	
+
+</script>
+
+</body>
+</html>
+
