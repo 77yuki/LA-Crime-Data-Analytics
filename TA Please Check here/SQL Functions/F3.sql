@@ -1,0 +1,13 @@
+USE `cs 338 project`;
+
+CREATE TABLE F3 AS
+SELECT
+    t1.LAT,
+    t1.LON,
+    t2.`DATE OCC`
+FROM AREADIST t1
+JOIN DATETIME t2 ON t1.DR_NO = t2.DR_NO;
+
+SELECT `LAT`, `LON`
+FROM F3
+WHERE `DATE OCC` BETWEEN '{ini_date}' AND '{end_date}'; #Use 04/06/2020 and 04/25/2020 to test
