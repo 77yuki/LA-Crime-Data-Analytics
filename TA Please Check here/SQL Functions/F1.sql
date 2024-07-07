@@ -6,7 +6,7 @@ SELECT
     t1.LON,
     t2.`Crm Cd`
 FROM AREADIST t1
-JOIN `TYPE` t2 ON t1.DR_NO = t2.DR_NO;
+JOIN TYPE t2 ON t1.DR_NO = t2.DR_NO;
 
 SELECT `LAT`, `LON`
 FROM F1
