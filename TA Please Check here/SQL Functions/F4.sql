@@ -1,6 +1,6 @@
 USE `cs 338 project`;
 
-CREATE TABLE IF NOT EXISTS Hours (
+CREATE TABLE Hours (
     HOUR INT PRIMARY KEY
 );
 
