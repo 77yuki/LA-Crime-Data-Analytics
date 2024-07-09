@@ -1,6 +1,6 @@
 README file: 
 
-a. A README file describing how to create and load your sample database：
+a. How to create and load your sample database：
 
 The data is downloaded from  https://catalog.data.gov/dataset/crime-data-from-2020-to-present. Making sure that the data is in a csv file and import the data into Mysql. 
 All the data is saved in csv file which inside the folder “Milestone 2/SQL Functions”, there are two different set of data, ‘Sample’ and ‘Production’, inside the folder, the ’Sample Dataset’ and ‘Production Dataset’ include the raw data we used for the application, each csv file will account for one or several function running. 
