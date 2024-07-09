@@ -57,8 +57,8 @@
     <h1>LA Crime Statistics</h1>
     <nav>
 		<form action="/" method="get" style="display: inline;">
-            <input type="hidden" name="query" value="Defult">
-            <button type="submit" class="nav-button">Defult</button>
+            <input type="hidden" name="query" value="Default">
+            <button type="submit" class="nav-button">Default</button>
         </form>
         <form action="/" method="get" style="display: inline;">
             <input type="hidden" name="query" value="F1">
@@ -89,8 +89,8 @@
     <form method="get" action="/">
         <input type="hidden" name="query" value="{{ query_name }}">
         
-		{% if query_name == 'Defult' %}
-        <p>Executing Defult Query</p>
+		{% if query_name == 'Default' %}
+        <p>Executing Default Query</p>
         {% endif %}
 		
         {% if query_name == 'F1' %}
@@ -102,7 +102,10 @@
         {% endif %}
 
         {% if query_name == 'F3' %}
-		<p>Executing F3 Query</p>
+		<label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
         {% endif %}
 
         {% if query_name == 'F4' %}
@@ -124,16 +127,19 @@
         <button type="submit">Submit</button>
     </form>
 	
+
+    {% if error %}
+	<p>Debug message:</p>
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+	
 	<input
       id="pac-input"
       class="controls"
       type="text"
       placeholder="Search Box"
     />
-
-    {% if error %}
-    <p style="color: red;">{{ error }}</p>
-    {% endif %}
+	
 
 <div id="map"></div>
 
@@ -357,4 +363,5 @@ function initAutocomplete() {
 
 </body>
 </html>
+
 
