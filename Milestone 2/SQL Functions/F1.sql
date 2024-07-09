@@ -10,6 +10,6 @@ JOIN TYPE_TABLE t2 ON t1.DR_NO = t2.DR_NO;
 
 SELECT `LAT`, `LON`
 FROM F1
-WHERE `Crm Cd` = '{crime_code}'; #Use 756 to test
+WHERE `Crm Cd` = '{crime_code}'; #Use 756 to test to get F1_sampleoutput.out, and use 420 to test and get F1_sampleoutput2
 
 
