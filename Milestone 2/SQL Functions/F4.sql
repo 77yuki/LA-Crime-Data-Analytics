@@ -10,7 +10,7 @@ VALUES
 (11), (12), (13), (14), (15), (16), (17), (18), 
 (19), (20), (21), (22), (23);
 
-CREATE TABLE IF NOT EXISTS F4 AS
+CREATE TABLE F4 AS
 SELECT
     t1.`AREA NAME`,
     t2.`TIME OCC`
