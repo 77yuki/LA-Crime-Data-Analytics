@@ -29,7 +29,7 @@ LEFT JOIN (
     FROM 
         F4
     WHERE 
-        `AREA NAME` = '{area_name}'  #Use 'Newton' to test
+        `AREA NAME` = '{area_name}'  #Use 'Newton' to test to get F4_sampleoutput.out, and use 'Hollywood' to test to get F4_sampleoutput2.out 
     GROUP BY 
         HOUR
 ) AS HourlyCrimes ON h.HOUR = HourlyCrimes.HOUR
