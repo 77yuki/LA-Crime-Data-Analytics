@@ -1,6 +1,5 @@
 USE `cs 338 project`;
 
-
 SELECT 
     h.HOUR,
     COALESCE(CrimeCount, 0) AS CrimeCount
