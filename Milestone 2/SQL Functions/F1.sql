@@ -1,4 +1,3 @@
-
 USE `cs 338 project`;
 
 SELECT t1.LAT, t1.LON
