@@ -5,7 +5,7 @@ WITH RECURSIVE Hours AS (
     UNION ALL
     SELECT HOUR + 1 FROM Hours WHERE HOUR < 23
 )
-    
+
 SELECT 
     h.HOUR,
     COALESCE(CrimeCount, 0) AS CrimeCount
@@ -20,7 +20,7 @@ LEFT JOIN (
     JOIN 
         DATETIME_TABLE t2 ON t1.DR_NO = t2.DR_NO
     WHERE 
-        t1.`AREA NAME` = '{area_name}'  #Use 'Newton' to test to get F4_sampleoutput.out, and use 'Hollywood' to test to get F4_sampleoutput2.out  
+        t1.`AREA NAME` = 'Newton'  -- 使用 'Newton' 来测试获取 F4_sampleoutput.out，使用 'Hollywood' 来测试获取 F4_sampleoutput2.out   
     GROUP BY 
         FLOOR(t2.`TIME OCC` / 100)
 ) AS HourlyCrimes ON h.HOUR = HourlyCrimes.HOUR
