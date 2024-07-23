@@ -36,13 +36,15 @@ LEFT JOIN (
         AREADIST_TABLE t1
     JOIN 
         DATETIME_TABLE t2 ON t1.DR_NO = t2.DR_NO
+    JOIN
+        STATUS_TBALE t3 ON t1.DR_NO = t3.DR_NO
     WHERE 
         t1.`AREA NAME` = '{area_name}'  #Use 'Newton' to test to get F4_sampleoutput.out, and use 'Hollywood' to test to get F4_sampleoutput2.out   
+        AND t3.`Status` = '{status}' #For example 'IC'
     GROUP BY 
         FLOOR(t2.`TIME OCC` / 100)
 ) AS HourlyCrimes ON h.HOUR = HourlyCrimes.HOUR
 ORDER BY 
     h.HOUR;
-
 
 
