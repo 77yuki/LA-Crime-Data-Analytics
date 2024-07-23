@@ -22,8 +22,8 @@ LEFT JOIN (
     JOIN
         STATUS_TABLE t3 ON t1.DR_NO = t3.DR_NO
     WHERE 
-        t1.`AREA NAME` = 'Newton'   #Use 'Newton' to test to get F4_sampleoutput.out, and use 'Hollywood' to test to get F4_sampleoutput2.out  
-        AND t3.`Status` = 'IC'    #Use 'IC' to test
+        t1.`AREA NAME` = '{area_name}'  #Use 'Newton' to test to get F4_sampleoutput.out, and use 'Hollywood' to test to get F4_sampleoutput2.out  
+        AND t3.`Status` = '{status}'   #Use 'IC' to test
     GROUP BY 
         FLOOR(t2.`TIME OCC` / 100)
 ) AS HourlyCrimes ON h.HOUR = HourlyCrimes.HOUR
