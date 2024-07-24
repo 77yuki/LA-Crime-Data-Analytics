@@ -4,7 +4,7 @@ SET @target_lat = '{lat}'; #Use 34.052235 to test
 SET @target_lon = '{lon}'; #Use -118.243683 to test
 SET @radius = 500;  
 
-SELECT COUNT(*) AS crime_count, @target_lat, @target_lon
+SELECT COUNT(*) AS crime_count, @target_lat As '{lat}', @target_lon AS '{lon}'
 FROM (
     SELECT 
         DR_NO, 
