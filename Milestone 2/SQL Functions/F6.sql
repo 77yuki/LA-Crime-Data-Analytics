@@ -2,7 +2,7 @@ SET @target_lat = '{lat}';
 SET @target_lon = '{lon}'; 
 SET @radius = 500;  
 
-SELECT COUNT(*) AS crime_count
+SELECT COUNT(*), @target_lat, @target_lon AS crime_count
 FROM (
     SELECT 
         DR_NO, 
