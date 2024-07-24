@@ -1,8 +1,10 @@
-SET @target_lat = '{lat}';  
-SET @target_lon = '{lon}'; 
+USE `cs 338 project`;
+
+SET @target_lat = '{lat}'; #Use 34.052235 to test
+SET @target_lon = '{lon}'; #Use -118.243683 to test
 SET @radius = 500;  
 
-SELECT COUNT(*), @target_lat, @target_lon AS crime_count
+SELECT COUNT(*) AS crime_count, @target_lat, @target_lon
 FROM (
     SELECT 
         DR_NO, 
