@@ -132,7 +132,7 @@
 		
         {% if query_name == 'F1' %}
         <label for="crime_code">Crime Code:</label>
-        <input type="text" id="crime_code" name="crime_code" value="{{ crime_code }}">
+        <input type="text" id="crime_code" name="crime_code" pattern="\d{3}" required title="Please enter exactly three digits." value="{{ crime_code }}">
 		<button type="submit">Execute</button>
         {% endif %}
 
@@ -141,18 +141,45 @@
         {% endif %}
 
         {% if query_name == 'F3' %}
-		<label for="start_date">Start Date:</label>
-        <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
-        <label for="end_date">End Date:</label>
-        <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+        <label for="area_name">Area Name:</label>
+        <select id="area_name" name="area_name">
+            <option value="77th Street">77th Street</option>
+            <option value="Central">Central</option>
+            <option value="Devonshire">Devonshire</option>
+            <option value="Foothill">Foothill</option>
+            <option value="Harbor">Harbor</option>
+            <option value="Hollenbeck">Hollenbeck</option>
+            <option value="Hollywood">Hollywood</option>
+            <option value="Mission">Mission</option>
+            <option value="N Hollywood">N Hollywood</option>
+            <option value="Newton">Newton</option>
+            <option value="Northeast">Northeast</option>
+            <option value="Olympic">Olympic</option>
+            <option value="Pacific">Pacific</option>
+            <option value="Rampart">Rampart</option>
+            <option value="Southeast">Southeast</option>
+            <option value="Southwest">Southwest</option>
+            <option value="Topanga">Topanga</option>
+            <option value="Van Nuys">Van Nuys</option>
+            <option value="West LA">West LA</option>
+            <option value="West Valley">West Valley</option>
+            <option value="Wilshire">Wilshire</option>
+        </select>
+
         <label for="status">Status:</label>
-        <input type="text" id="status" name="status" value="{{ status }}">
+        <select id="status" name="status">
+            <option value="AA">Adult Arrest</option>
+            <option value="AO">Adult Other</option>
+            <option value="IC">Invest Cont</option>
+            <option value="JA">Juv Arrest</option>
+            <option value="JO">Juv Other</option>
+        </select>
+
 		<button type="submit">Execute</button>
         {% endif %}
 
         {% if query_name == 'F4' %}
         <label for="area_name">Area Name:</label>
-
         <select id="area_name" name="area_name">
             <option value="77th Street">77th Street</option>
             <option value="Central">Central</option>
@@ -186,10 +213,14 @@
 		
 		{% if query_name == 'F6' %}
         <label for="lat">Latitude:</label>
-        <input type="text" id="lat" name="lat" value="{{ lat }}">
+        <input type="text" id="lat" name="lat" pattern="-?([1-8]?[0-9](\.\d+)?|90(\.0+)?)" required title="Please enter a valid latitude (-90 to 90)" value="{{ lat }}"">
+
+        
         <label for="lon">Longitude:</label>
-        <input type="text" id="lon" name="lon" value="{{ lon }}">
+        <input type="text" id="lon" name="lon" pattern="-?((1?[0-7]?[0-9](\.\d+)?|180(\.0+)?))" required title="Please enter a valid longitude (-180 to 180)" value="{{ lon }}">
+
 		<button type="submit">Execute</button>
+        
         {% endif %}
 		
     </form>
@@ -231,10 +262,42 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0QPGHSS4qW_ckP3g6TOmT1qVgcJBJ0Qs&callback=initMap" async defer></script>
 
 <script>
+    document.getElementById("crimeForm").addEventListener("submit", function(event) {
+      var crimeCode = document.getElementById("crime_code").value;
+      
+      // Additional JavaScript validation if needed
+      if (!/^\d{3}$/.test(crimeCode)) {
+        event.preventDefault(); // Prevent form submission
+        alert("Please enter exactly four digits for the crime code.");
+      }
+    });
+    document.getElementById("locationForm").addEventListener("submit", function(event) {
+    var lat = document.getElementById("lat").value;
+    var lon = document.getElementById("lon").value;
+    
+    if (!isValidLatitude(lat) || !isValidLongitude(lon)) {
+      event.preventDefault(); // Prevent form submission
+      alert("Please enter valid latitude (-90 to 90) and longitude (-180 to 180).");
+    }
+  });
+
+  function isValidLatitude(lat) {
+    var latitude = parseFloat(lat);
+    return !isNaN(latitude) && latitude >= -90 && latitude <= 90;
+  }
+
+  function isValidLongitude(lon) {
+    var longitude = parseFloat(lon);
+    return !isNaN(longitude) && longitude >= -180 && longitude <= 180;
+  }
+  </script>
+
+
+<script>
 function initMap() {
        var options = {
             zoom: 10,
-            center: {lat: 34.0522, lng: -118.2437} // San Francisco
+            center: {lat: 34.0522, lng: -118.2437} 
         };
 
        var map = new google.maps.Map(document.getElementById('map'), options);
@@ -317,7 +380,7 @@ function initAutocomplete() {
         anchor: new google.maps.Point(17, 34),
         scaledSize: new google.maps.Size(25, 25),
       };
-
+      
       // Create a marker for each place.
       markers.push(
         new google.maps.Marker({
