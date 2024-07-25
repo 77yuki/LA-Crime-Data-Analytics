@@ -11,7 +11,7 @@ def get_db_connection():
     return mysql.connector.connect(
         host="127.0.0.1",         # Change this to your own IP address
         user="root",              # Change this to your own MySQL username
-        password="",              # Change this to your own MySQL password
+        password="ltcb57655",              # Change this to your own MySQL password
         database="cs 338 project"   
     )
 
@@ -25,10 +25,12 @@ def read_query_from_file(filename):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     global markers
+    hasmarker = False
     query_name = request.args.get('query', 'Default')  # Default query is 'Default'
     most_or_least = request.args.get('most_or_least', 'Most')
     start_date = request.args.get('start_date', '04-06-2020')
     end_date = request.args.get('end_date', '04-25-2020')
+    status = request.args.get('status', '')
     crime_code = request.args.get('crime_code', '756')
     area_name = request.args.get('area_name', 'Central')
     lat = request.args.get('lat', '34.052235')
@@ -59,17 +61,16 @@ def index():
 
     data = []
     error = None
-
+    hasmarker = False
+    
     if query_name in query_files:
         query = read_query_from_file(query_files[query_name])
         print(f"Query before formatting: {query}")
         try:
             if query_name == 'F1':
                 query = query.format(crime_code=crime_code)
-#            elif query_name == 'F2':
-#                query = query.format(crime_type=crime_type)
             elif query_name == 'F3':
-                query = query.format(ini_date=start_date, end_date=end_date)
+                query = query.format(init_date=start_date, end_date=end_date, status=status)
             elif query_name == 'F4':
                 query = query.format(area_name=area_name)
             elif query_name == 'F6':
@@ -80,8 +81,11 @@ def index():
                 if result.with_rows:
                     print("Rows produced by statement '{}':".format(result.statement))
                     data = result.fetchall()
+                    if (hasmarker == False):
+                        markers = data
+                        hasmarker = True
+
                     print(data)
-            markers = data
             print(f"Data Fetched: {data}")
 
         except Exception as e:
@@ -95,7 +99,7 @@ def index():
     db.close()
     
     return render_template('index.html', query_name=query_name, data=data, most_or_least=most_or_least, start_date=start_date, end_date=end_date, 
-                           crime_code=crime_code, area_name=area_name, error=error, lat=lat, lon=lon)
+                           crime_code=crime_code, area_name=area_name, error=error, lat=lat, lon=lon,status=status)
 
 @app.route('/api/markers')
 def get_markers():
