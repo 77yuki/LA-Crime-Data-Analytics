@@ -25,11 +25,9 @@ c. What feature it currently supports：
 
 F1: The first feature/functionality is to show the specific location by latitude and longitude if our users enter any type of crime they hope to check.
 F2: The second feature/functionality is to show the area with the most number of crimes.
-F3: The third feature/functionality shows the location of crimes within the specific date range by latitude and longitude. 
+F3: The third feature/functionality shows the location of crimes by the filtered area names and status. 
 F4: The fourth feature/functionality counts the number of crimes on an hourly basis, given a certain area.
 F5: The fifth feature/functionality is to show the sex distribution of the victims.
 F6: The sixth feature/functionality is to find out how many crimes happened within 500 meters given a latitude and a longitude.
 
-After opening Github, please look at the left side and there is a folder named milestone 2. This folder contains a folder named "SQL Functions". It is composed of four parts. The first part is the "Production" folder. If you see F1_productiondataoutput.out, it is the output file of the first feature production data test. The second part is the "Sample" folder. If you see F2_sampleoutput.out, it is the output file of the second feature sample data test. The third part is TestCode. If you see F4_test.sql, it is the sql query of feature 4 and it is asked to run with the inserted value “Newton". In addition, while seeing F4.sql, it is the F4 query and no inserted value.
-
-Please note that,things like F1_productionoutput2.out refers to the output of F1 production data test. However, the production data used (AREADIST_PRODUCTION_F1.csv and TYPE_PRODUCTION_F1)is different from which of F1_productionoutput.out(AREADIST.csv and TYPE_PRODUCTION.csv). Similarly, we find things like F1_sampleoutput2.out, F1_test2.sql and AREADIST_SAMPLE_F1.csv. 
+After opening Github, please look at the left side and there is a folder named milestone 2. This folder contains a folder named "SQL Functions". It is composed of four parts. The first part is Production, and it contains the datasets used to do tests of production and the production output of each feature. The second part is Sample and its organization follows the same logic as the first part. After that, you see the third part TestCode and this includes the code used to test the datasets. Finally, there are the queries of the features. All folders and files other than the SQL Function folder are for html uses.
