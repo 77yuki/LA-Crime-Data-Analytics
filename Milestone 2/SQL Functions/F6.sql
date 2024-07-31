@@ -10,5 +10,5 @@ FROM (
         (6371000 * ACOS(COS(RADIANS(@target_lat)) * COS(RADIANS(LAT)) * COS(RADIANS(LON) - RADIANS(@target_lon)) + SIN(RADIANS(@target_lat)) * SIN(RADIANS(LAT)))) AS distance
     FROM areadist_table
 ) AS distances
-WHERE distance <= @radius;
+WHERE distance <= @radius; #use lat = 34.1018 and lon = -118.3035 to test
 
