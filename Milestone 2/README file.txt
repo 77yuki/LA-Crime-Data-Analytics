@@ -21,7 +21,7 @@ Notice:
 -If you cannot connect to the database, this might be because the ‘MySQL80’ server has stopped. For windows 10,  you need to open the task manager, and find the server in ‘Servers’, and run the server.
 -Each function is connected to a specific name of table, please load the tables into the database correctly before running the application.
 
-c. What feature it currently supports： 
+c. What features it currently supports： 
 
 F1: The first feature/functionality is to show the specific location by latitude and longitude if our users enter any type of crime they hope to check.
 F2: The second feature/functionality is to show the area with the most number of crimes.
